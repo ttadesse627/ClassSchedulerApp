@@ -1,3 +1,10 @@
 bin/
 obj/
 Migrations
+SchedulerAPIDBConnection.session.sql
+ClassSchedulerAPiConnection.session.sql
+.vscode/launch.json
+.vscode/settings.json
+.vscode/tasks.json
+Resources/APIDesign.md
+Note.md
