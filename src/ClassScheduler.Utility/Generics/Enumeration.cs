@@ -2,16 +2,16 @@
 
 namespace ClassScheduler.Utility.Generics;
 
-public abstract class Enumeration<TEnum>(int value, string name) : IEquatable<Enumeration<TEnum>>
+public abstract class Enumeration<TEnum>(Guid id, string name) : IEquatable<Enumeration<TEnum>>
     where TEnum : Enumeration<TEnum>
 {
-    private static readonly Dictionary<int, TEnum> Enumerations = CreateEnumerations();
-    public int Value { get; protected init; } = value;
-    public string Name { get; protected init; } = name;
-    public static TEnum? FromValue(int value)
+    private static readonly Dictionary<Guid, TEnum> Enumerations = CreateEnumerations();
+    public Guid Id { get; init; } = id;
+    public string Name { get; init; } = name;
+    public static TEnum? FromValue(Guid id)
     {
         return Enumerations.TryGetValue(
-            value,
+            id,
             out TEnum? enumeration) ?
                 enumeration :
                 default;
@@ -32,7 +32,7 @@ public abstract class Enumeration<TEnum>(int value, string name) : IEquatable<En
         }
 
         return GetType() == other.GetType() &&
-               Value == other.Value;
+               Id == other.Id;
     }
 
     public override bool Equals(object? obj)
@@ -43,7 +43,7 @@ public abstract class Enumeration<TEnum>(int value, string name) : IEquatable<En
 
     public override int GetHashCode()
     {
-        return Value.GetHashCode();
+        return Id.GetHashCode();
     }
 
     public override string ToString()
@@ -51,7 +51,7 @@ public abstract class Enumeration<TEnum>(int value, string name) : IEquatable<En
         return Name;
     }
 
-    private static Dictionary<int, TEnum> CreateEnumerations()
+    private static Dictionary<Guid, TEnum> CreateEnumerations()
     {
         var enumerationType = typeof(TEnum);
 
@@ -65,6 +65,6 @@ public abstract class Enumeration<TEnum>(int value, string name) : IEquatable<En
             .Select(fieldInfo =>
                 (TEnum)fieldInfo.GetValue(default)!);
 
-        return fieldsForType.ToDictionary(x => x.Value);
+        return fieldsForType.ToDictionary(x => x.Id);
     }
 }

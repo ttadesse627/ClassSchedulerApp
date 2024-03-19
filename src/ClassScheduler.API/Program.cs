@@ -7,14 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://localhost:5000");
 builder.Services.AddControllers();
 
+builder.Services.AddAuthentication();
 builder.Services.AddApplication(builder.Configuration)
                 .AddInfrastructure(builder.Configuration);
 
 // var myCorsPolicy = "_myAllowSpecificOrigins";
 
-builder.Services.AddCors(options => {
+builder.Services.AddCors(options =>
+{
   options.AddDefaultPolicy(
-    policy => {
+    policy =>
+    {
       policy.WithOrigins("http://localhost:3000");
     }
   );

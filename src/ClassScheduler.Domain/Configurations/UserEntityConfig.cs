@@ -17,9 +17,5 @@ public class UserEntityConfig : IEntityTypeConfiguration<User>
             .WithOne(personInfo => personInfo.User)
             .HasForeignKey<User>(user => user.PersonInfoId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(user => user.Roles)
-            .WithMany(role => role.Users)
-            .UsingEntity<UserRole>();
     }
 }

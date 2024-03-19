@@ -12,21 +12,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClassScheduler.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class DepartmentController(ISender sender) : ControllerBase
+public class DepartmentController(ISender sender) : ApiController
 {
     private readonly ISender _sender = sender;
 
     [HasPermission(PermissionEnum.WriteMember)]
-    [HttpPost(Name = "Create")]
+    [HttpPost("Create")]
     public async Task<ActionResult<ServiceResponse<DepartmentResponseDto>>> Create(DepartmentRequestDto departmentRequest)
     {
         var response = await _sender.Send(new CreateDepartmentCommand(departmentRequest));
         return Ok(response);
     }
 
-    [HttpGet(Name = "GetAll")]
+    [HttpGet("GetAll")]
     public async Task<ActionResult<ServiceResponse<List<DepartmentResponseDto>>>> Get()
     {
         var response = await _sender.Send(new GetAllDepartmentsQuery());

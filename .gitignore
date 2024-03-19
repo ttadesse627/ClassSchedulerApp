@@ -5,3 +5,4 @@ SchedulerAPIDBConnection.session.sql
 ClassSchedulerAPiConnection.session.sql
 .vscode/
 Resources/
+Properties/

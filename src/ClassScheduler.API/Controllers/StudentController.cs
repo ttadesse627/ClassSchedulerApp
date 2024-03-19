@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClassScheduler.API.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class StudentController : ControllerBase
+public class StudentController : ApiController
 {
     private readonly ISender _sender;
 

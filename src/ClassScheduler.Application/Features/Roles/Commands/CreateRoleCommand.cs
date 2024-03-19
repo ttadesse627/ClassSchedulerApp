@@ -15,29 +15,29 @@ public class CreateRoleCommandHandler(IRoleRepository roleRepository, IMapper ma
     public async Task<ServiceResponse<int>> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<int>();
-        if (request.RoleRequest is not null)
-        {
-            if (!string.IsNullOrEmpty(request.RoleRequest.Name))
-            {
-                var roleEntity = new Role
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = request.RoleRequest.Name,
-                    Permissions = _mapper.Map<List<Permission>>(request.RoleRequest.Permissions),
-                };
-                var resp = await _roleRepository.CreateRoleAsync(role: roleEntity);
-                response.Data = resp.Data;
-                response.Message = resp.Message;
-                response.Errors = resp.Errors;
-                response.Success = resp.Success;
+        // if (request.RoleRequest is not null)
+        // {
+        //     if (!string.IsNullOrEmpty(request.RoleRequest.Name))
+        //     {
+        //         var roleEntity = new Role
+        //         {
+        //             Id = Guid.NewGuid().ToString(),
+        //             Name = request.RoleRequest.Name,
+        //             Permissions = _mapper.Map<List<Permission>>(request.RoleRequest.Permissions),
+        //         };
+        //         var resp = await _roleRepository.CreateRoleAsync(role: roleEntity);
+        //         response.Data = resp.Data;
+        //         response.Message = resp.Message;
+        //         response.Errors = resp.Errors;
+        //         response.Success = resp.Success;
 
-            }
-            else
-            {
-                response.Message = "The role name should not be null or empty!";
-                response.Errors.Add(response.Message);
-            }
-        }
+        //     }
+        //     else
+        //     {
+        //         response.Message = "The role name should not be null or empty!";
+        //         response.Errors.Add(response.Message);
+        //     }
+        // }
 
         return response;
     }

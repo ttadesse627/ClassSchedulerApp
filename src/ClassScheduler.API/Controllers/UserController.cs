@@ -9,6 +9,7 @@ public class UserController(ISender sender) : ApiController
 {
     private readonly ISender _sender = sender;
 
+    [HttpPost("Create")]
     public async Task<ActionResult<ServiceResponse<int>>> Create(CreateUserRequest request)
     {
         return Ok(await _sender.Send(new CreateUserCommand(request)));
