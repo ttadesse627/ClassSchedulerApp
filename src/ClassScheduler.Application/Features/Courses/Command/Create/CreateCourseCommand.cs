@@ -6,10 +6,7 @@ using MediatR;
 namespace ClassScheduler.Application.Features.Courses.Command.Create;
 public record CreateCourseCommand : IRequest<ServiceResponse<int>>
 {
-    public required string Name { get; set; }
-    public required string CourseCode { get; set; }
-    public int CreditHours { get; set; }
-    public int ECTS { get; set; }
+    public ICollection<CreateCourseRequest> Courses { get; set; } = [];
     public Guid DepartmentId { get; set; }
 }
 
@@ -19,33 +16,38 @@ public class CreateCourseCommandHandler(ICourseRepository courseRepository) : IR
     public async Task<ServiceResponse<int>> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<int>();
-        if (!string.IsNullOrEmpty(request.Name) && !string.IsNullOrEmpty(request.CourseCode))
+        IList<Course> courses = [];
+        if (request.Courses.Count > 0)
         {
-            var courseEntity = new Course
+            foreach (var course in request.Courses)
             {
-                Name = request.Name,
-                CourseCode = request.CourseCode,
-                CreditHours = request.CreditHours,
-                ECTS = request.ECTS,
-                DepatmentId = request.DepartmentId
-            };
-            var resp = await _courseRepository.CreateAsync(courseEntity);
-            if (resp)
+                var courseEntity = new Course
+                {
+                    Name = course.Name,
+                    CourseCode = course.CourseCode,
+                    CreditHours = course.CreditHours,
+                    ECTS = course.ECTS,
+                    DepatmentId = request.DepartmentId
+                };
+                courses.Add(courseEntity);
+            }
+            response.Success = await _courseRepository.CreateAsync(courses);
+            if(response.Success)
             {
-                response.Success = resp;
-                response.Message = "Successfully Created";
+                response.Message = "Successfully created course/s";
                 response.Data = 1;
             }
             else
             {
-                response.Message = "Couldn't create a course with a given request!";
-                response.Errors.Add("Unknown Error");
+                response.Message = "Couldn't created course/s";
+                response.Errors.Add("Couldn't created course/s");
             }
+
         }
         else
         {
-            response.Message = "The course should have a name or code.";
-            response.Errors.Add("Null value error");
+            response.Message = "Courses should not be empty.";
+            response.Errors.Add("Courses field required");
         }
         return response;
     }
