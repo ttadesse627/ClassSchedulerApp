@@ -7,9 +7,15 @@ public class RoleEntityConfig : IEntityTypeConfiguration<Role>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
-        builder.HasKey(ur => ur.Id);
+        builder.HasKey(role => role.Id);
 
         builder.HasMany(role => role.Permissions)
-            .WithMany();
+            .WithMany()
+            .UsingEntity<RolePermission>();
+
+        builder.HasMany(role => role.Users)
+            .WithMany(user => user.Roles)
+            .UsingEntity<UserRole>();
+
     }
 }

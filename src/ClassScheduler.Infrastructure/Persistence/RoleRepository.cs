@@ -2,40 +2,47 @@ using ClassScheduler.Application.Contracts.ResponseDtos.Common;
 using ClassScheduler.Application.Interfaces.Persistence;
 using ClassScheduler.Domain.Model.Entities;
 using ClassScheduler.Infrastructure.Context;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClassScheduler.Infrastructure.Persistence;
-public class RoleRepository(ClassSchedulerDbContext context, RoleManager<Role> roleManager) : IRoleRepository
+public class RoleRepository(ClassSchedulerDbContext context) : IRoleRepository
 {
     private readonly ClassSchedulerDbContext _context = context;
-    private readonly RoleManager<Role> _roleManager = roleManager;
-
-    public async Task<ServiceResponse<int>> CreateRoleAsync(Role role)
+    public async Task<ServiceResponse<int>> CreateRoleAsync(Role role, CancellationToken cancellationToken)
     {
         ServiceResponse<int> response = new();
         if (role is not null)
         {
-            var resp = await _roleManager.CreateAsync(role);
-            if (resp.Succeeded)
+            _context.Roles.Add(role);
+            int i = await _context.SaveChangesAsync(cancellationToken);
+            if (i > 0)
             {
                 response.Data = 1;
-                response.Success = resp.Succeeded;
+                response.Success = true;
                 response.Message = "Role created successfully!";
             }
             else
             {
-                response.Success = resp.Succeeded;
-                response.Errors?.AddRange(resp.Errors.Select(er => er.Code));
-                response.Message = resp.Errors.Select(error => error.Description).ToString()!;
+                response.Success = false;
+                response.Message = "Could not create a role";
             }
         }
 
         return response;
-        // new ServiceResponse<int>{
-        //     Data = 1,
-        //     Success = true,
-        //     Message = "Successfully Created!",
-        //     Errors = []
-        // };
+    }
+
+    public async Task<List<Role>> GetAllAsync()
+    {
+        return await _context.Roles.ToListAsync();
+    }
+
+    public async Task<List<Role>> GetRolesAsync(ICollection<Guid> roleIds)
+    {
+        List<Role> roles = [];
+        if (roleIds.Count != 0)
+        {
+            roles.AddRange(await _context.Roles.Where(role => roleIds.Contains(Guid.Parse(role.Id))).ToListAsync());
+        }
+        return roles;
     }
 }

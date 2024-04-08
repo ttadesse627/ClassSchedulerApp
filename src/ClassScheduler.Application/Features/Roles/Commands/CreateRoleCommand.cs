@@ -19,8 +19,10 @@ public class CreateRoleCommandHandler(IRoleRepository roleRepository, IMapper ma
         {
             if (!string.IsNullOrEmpty(request.RoleRequest.Name))
             {
-                var roleEntity = new Role(Guid.NewGuid(), request.RoleRequest.Name)
+                var roleEntity = new Role
                 {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = request.RoleRequest.Name,
                     Permissions = _mapper.Map<List<Permission>>(request.RoleRequest.Permissions),
                 };
                 var resp = await _roleRepository.CreateRoleAsync(role: roleEntity, cancellationToken);

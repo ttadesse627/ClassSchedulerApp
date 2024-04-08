@@ -4,5 +4,7 @@ using ClassScheduler.Domain.Model.Entities;
 namespace ClassScheduler.Application.Interfaces.Persistence;
 public interface IRoleRepository
 {
-    public Task<ServiceResponse<int>> CreateRoleAsync(Role role, CancellationToken cancellationToken);
+    Task<ServiceResponse<int>> CreateRoleAsync(Role role, CancellationToken cancellationToken);
+    Task<List<Role>> GetRolesAsync(ICollection<Guid> roleIds);
+    Task<List<Role>> GetAllAsync();
 }

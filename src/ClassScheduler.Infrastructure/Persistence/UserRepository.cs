@@ -1,6 +1,9 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using ClassScheduler.Application.Contracts.ResponseDtos.Common;
 using ClassScheduler.Application.Interfaces.Persistence;
 using ClassScheduler.Domain.Model.Entities;
+using ClassScheduler.Infrastructure.Authentication;
 using ClassScheduler.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,27 +17,25 @@ public class UserRepository(ClassSchedulerDbContext context, UserManager<User> u
     public async Task<ServiceResponse<int>> CreateUserAsync(User user, string password)
     {
         ServiceResponse<int> response = new();
-        if (user is not null && !string.IsNullOrEmpty(password))
+        var resp = await _userManager.CreateAsync(user, password);
+        if (resp.Succeeded)
         {
-            var resp = await _userManager.CreateAsync(user, password);
-            if (resp.Succeeded)
-            {
-                response.Data = 1;
-                response.Success = resp.Succeeded;
-                response.Message = "User created successfully!";
-            }
-            else
-            {
-                response.Success = resp.Succeeded;
-                response.Errors?.AddRange(resp.Errors.Select(er => er.Code));
-                response.Message = resp.Errors.Select(error => error.Description).ToString()!;
-            }
+            await _userManager.AddClaimAsync(user, new Claim(JwtRegisteredClaimNames.Jti, user.Id));
+            response.Data = 1;
+            response.Success = resp.Succeeded;
+            response.Message = "User created successfully!";
+        }
+        else
+        {
+            response.Success = resp.Succeeded;
+            response.Errors?.AddRange(resp.Errors.Select(er => er.Code));
+            response.Message = resp.Errors.Select(error => error.Description).ToString()!;
         }
 
         return response;
     }
 
-    public async Task<User> GetUserByUsernameAsync(string email)
+    public async Task<User?> GetByEmailAsync(string email)
     {
         User? user = null;
         if (!string.IsNullOrEmpty(email))
@@ -44,4 +45,21 @@ public class UserRepository(ClassSchedulerDbContext context, UserManager<User> u
 
         return user!;
     }
+
+    public async Task<(Result result, IList<string>? roles, string? userId)> AuthenticateUser(string userName, string password)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+
+            if (user != null && await _userManager.CheckPasswordAsync(user, password))
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                return (Result.Success(), userRoles, user.Id);
+
+            }
+            string[] errors = ["Invalid login"];
+
+            return (Result.Failure(errors), null, null);
+
+        }
 }

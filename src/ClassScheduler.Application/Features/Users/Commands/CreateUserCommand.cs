@@ -3,14 +3,15 @@ using ClassScheduler.Application.Contracts.ResponseDtos.Common;
 using ClassScheduler.Application.Interfaces.Persistence;
 using ClassScheduler.Domain.Model.Entities;
 using MediatR;
-using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ClassScheduler.Application.Features.Users.Commands;
 public record CreateUserCommand(CreateUserRequest UserRequest) : IRequest<ServiceResponse<int>> { }
-public class CreateUserCommandHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, ServiceResponse<int>>
+public class CreateUserCommandHandler(IUserRepository userRepository, IRoleRepository roleRepository, UserManager<User> userManager) : IRequestHandler<CreateUserCommand, ServiceResponse<int>>
 {
     private readonly IUserRepository _userRepository = userRepository;
-    // private readonly IRoleRepository _roleRepository = roleRepository;
+    private readonly IRoleRepository _roleRepository = roleRepository;
+    private readonly UserManager<User> _userManager = userManager;
 
     public async Task<ServiceResponse<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
@@ -31,22 +32,38 @@ public class CreateUserCommandHandler(IUserRepository userRepository) : IRequest
                     };
                 }
 
+                var roles = await _roleRepository.GetRolesAsync(request.UserRequest.RoleIds);
                 var userEntity = new User
                 {
                     Id = Guid.NewGuid().ToString(),
                     UserName = request.UserRequest.Username,
                     Email = request.UserRequest.Email,
-                    PersonInfo = personInfo
-
+                    PersonInfo = personInfo,
+                    Roles = roles
                 };
-                // var resp = await _roleRepository.(role: roleEntity);
-                // response.Data = resp.Data;
-                // response.Message = resp.Message;
-                // response.Errors = resp.Errors;
-                // response.Success = resp.Success;
 
-                await _userRepository.CreateUserAsync(userEntity, request.UserRequest.Password);
-
+                IdentityResult? identityResult = null;
+                try
+                {
+                    identityResult = await _userManager.CreateAsync(userEntity, request.UserRequest.Password);
+                    if (identityResult.Succeeded)
+                    {
+                        response.Data = 1;
+                        response.Message = "Successfully created a user!";
+                        response.Success = identityResult.Succeeded;
+                    }
+                    else
+                    {
+                        response.Message = identityResult.Errors.Select(error => error.Description).First();
+                        response.Errors.AddRange(identityResult.Errors.Select(error => error.Code));
+                    }
+                }
+                catch (Exception)
+                {
+                    response.Message = "Could not create a user!";
+                    response.Errors.AddRange(identityResult!.Errors.Select(err => err.Code));
+                    throw;
+                }
             }
             else
             {
