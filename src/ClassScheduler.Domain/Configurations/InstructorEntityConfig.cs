@@ -1,6 +1,3 @@
-
-
-
 using ClassScheduler.Domain.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -15,6 +12,11 @@ public class InstructorEntityConfig : IEntityTypeConfiguration<Instructor>
         builder.HasOne(instructor => instructor.User)
             .WithOne(user => user.Instructor)
             .HasForeignKey<Instructor>(instructor => instructor.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(instructor => instructor.PersonInfo)
+            .WithOne(personInfo => personInfo.Instructor)
+            .HasForeignKey<Instructor>(instructor => instructor.PersonInfoId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(instructor => instructor.Courses)

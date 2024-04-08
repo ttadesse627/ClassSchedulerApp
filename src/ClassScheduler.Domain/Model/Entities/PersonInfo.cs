@@ -11,4 +11,6 @@ public class PersonInfo
 
     // Navigation Properties
     public User? User { get; set; }
+    public Instructor? Instructor { get; set; }
+    public Student? Student { get; set; }
 }

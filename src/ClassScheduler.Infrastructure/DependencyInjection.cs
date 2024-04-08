@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
         services.AddTransient(typeof(IStudentRepository), typeof(StudentRepository));
+        services.AddTransient(typeof(IInstructorRepository), typeof(InstructorRepository));
         services.AddTransient(typeof(IDepartmentRepository), typeof(DepartmentRepository));
         services.AddTransient(typeof(ICourseRepository), typeof(CourseRepository));
         services.AddTransient(typeof(IRoomRepository), typeof(RoomRepository));
