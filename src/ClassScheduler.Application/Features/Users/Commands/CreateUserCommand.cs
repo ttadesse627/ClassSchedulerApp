@@ -17,7 +17,7 @@ public class CreateUserCommandHandler(IUserRepository userRepository) : IRequest
         var response = new ServiceResponse<int>();
         if (request.UserRequest is not null)
         {
-            if (!string.IsNullOrEmpty(request.UserRequest.Username.Trim()) || !string.IsNullOrEmpty(request.UserRequest.Password.Trim()))
+            if (!string.IsNullOrEmpty(request.UserRequest.Username?.Trim()) || !string.IsNullOrEmpty(request.UserRequest.Password.Trim()))
             {
                 PersonInfo? personInfo = null;
                 if (request.UserRequest.PersonInfo is not null)
