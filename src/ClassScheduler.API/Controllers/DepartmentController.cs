@@ -8,6 +8,7 @@ using ClassScheduler.Application.Features.Departments.Query;
 using ClassScheduler.Domain.Model.Enums;
 using ClassScheduler.Infrastructure.Authentication;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClassScheduler.API.Controllers;
@@ -16,7 +17,7 @@ public class DepartmentController(ISender sender) : ApiController
 {
     private readonly ISender _sender = sender;
 
-    [HasPermission(PermissionEnum.WriteMember)]
+    // [HasPermission(PermissionEnum.WriteMember)]
     [HttpPost("Create")]
     public async Task<ActionResult<ServiceResponse<DepartmentResponseDto>>> Create(DepartmentRequestDto departmentRequest)
     {
@@ -28,6 +29,12 @@ public class DepartmentController(ISender sender) : ApiController
     public async Task<ActionResult<ServiceResponse<List<DepartmentResponseDto>>>> Get()
     {
         var response = await _sender.Send(new GetAllDepartmentsQuery());
+        return Ok(response);
+    }
+    [HttpGet("GetForCourse")]
+    public async Task<ActionResult<ServiceResponse<List<GetForCourseDto>>>> GetForcourse()
+    {
+        var response = await _sender.Send(new GetForCourseQuery());
         return Ok(response);
     }
 
@@ -50,17 +57,14 @@ public class DepartmentController(ISender sender) : ApiController
     [HttpDelete("Delete/{id}")]
     public async Task<ActionResult<ServiceResponse<int>>> Delete(string id)
     {
-        object response;
         if (!string.IsNullOrEmpty(id))
         {
-            response = await _sender.Send(new DeleteDepartmentCommand(Guid.Parse(id)));
+            return Ok(await _sender.Send(new DeleteDepartmentCommand(Guid.Parse(id))));
         }
         else
         {
             return BadRequest("The department id is missing!");
         }
-
-        return Ok(response);
     }
 
     [HttpPut("Edit/{id}")]

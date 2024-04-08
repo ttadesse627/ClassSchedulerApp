@@ -8,21 +8,25 @@ public class DepartmentRepository(ClassSchedulerDbContext context) : CommonRepos
 {
     private readonly ClassSchedulerDbContext _context = context;
 
-    public async Task<Department> CreateDepartmentAsync(Department department)
+    public async Task<bool> CreateDepartmentAsync(Department department)
     {
-        var response = new Department();
+        bool response = false;
         if (department != null)
         {
-            _context.Departments!.Add(department);
+            _context.Departments.Add(department);
             var affectedRows = await _context.SaveChangesAsync();
-            if (affectedRows > 0) response = await _context.Departments.FindAsync(department.Id);
+            if (affectedRows > 0) response = true;
         }
 
-        return response!;
+        return response;
     }
     public async Task<List<Department>> GetAllAsync()
     {
-        return await _context.Departments!.ToListAsync();
+        return await _context.Departments.ToListAsync();
+    }
+    public async Task<List<Department>> GetForCourseAsync()
+    {
+        return await _context.Departments.ToListAsync();
     }
 
     public async Task<Department> GetAsync(Guid id)

@@ -4,6 +4,7 @@ using ClassScheduler.Application.Contracts.RequestDtos.RoleRequestDtos;
 using ClassScheduler.Application.Contracts.RequestDtos.StudentRequestDts;
 using ClassScheduler.Application.Contracts.ResponseDtos.CourseResponseDtos;
 using ClassScheduler.Application.Contracts.ResponseDtos.DepartmentResponseDtos;
+using ClassScheduler.Application.Contracts.ResponseDtos.RoomResponseDtos;
 using ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDts;
 using ClassScheduler.Domain.Model.Entities;
 using Mapster;
@@ -23,6 +24,7 @@ namespace ClassScheduler.Application.Mappings
             config.NewConfig<Course, CourseResponseDto>();
             config.NewConfig<EditDepartmentRequestDto, Department>();
             config.NewConfig<List<CreatePermissionRequest>, List<Permission>>();
+            config.NewConfig<List<Room>, List<RoomResponseDto>>();
         }
     }
 }
