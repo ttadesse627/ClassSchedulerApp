@@ -1,3 +1,45 @@
 
-@host = http://localhost:5000
-GET {{host}}/WeatherForecast
+@host = http://127.0.0.1:8080
+
+### #Department Requests
+GET {{host}}/api/Department/GetForCourse
+
+### Create Department
+POST {{host}}/api/Department/Create HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Department A",
+  "shortName": "DA",
+  "numberOfSemisters": 10,
+  "currentSemister": 1,
+  "courses": [
+  ]
+}
+### Course Requests
+GET {{host}}/api/Course/GetAll
+
+###
+DELETE {{host}}/api/Course/Delete/
+
+### User Request
+POST {{host}}/api/User/Create HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "dula@mail.com",
+  "phoneNumber": "+251946938942",
+  "username": "dula",
+  "password": "dulaCh@123",
+  "personInfo": {
+    "firstName": "Dula",
+    "middleName": "Chala",
+    "lastName": "Tolcha",
+    "birthDate": "2024-03-19"
+  },
+  "roleIds": [
+    "c200d6f4-f6d4-4997-aea7-fde8ef78e37d"
+  ]
+}
+
+
