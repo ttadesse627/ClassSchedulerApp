@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ClassScheduler.Application.Interfaces.Persistence;
+using ClassScheduler.Domain.Model.Entities;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ClassScheduler.Infrastructure.Authentication;
@@ -18,18 +19,16 @@ public class TokenProviderService : ITokenProviderService
         _audience = audience;
         _expiryMinutes = expiryMinutes;
     }
-    public async Task<string> GenerateJWTTokenAsync((string userId, string userName, IList<string> roles) userDetails)
+    public async Task<string> GenerateJWTTokenAsync(User userDetails)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var (userId, userName, roles) = userDetails;
-
         var claims = new List<Claim>()
         {
-            new(JwtRegisteredClaimNames.Sub, userName),
-            new(JwtRegisteredClaimNames.Jti, userId),
-            new(ClaimTypes.Name, userName)
+            new (CustomClaims.UserId, userDetails.Id),
+            new(JwtRegisteredClaimNames.Sub, userDetails.UserName),
+            new(JwtRegisteredClaimNames.Jti, userDetails.PersonInfo.FirstName)
         };
 
         var token = new JwtSecurityToken(

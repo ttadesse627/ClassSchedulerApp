@@ -45,4 +45,15 @@ public class RoleRepository(ClassSchedulerDbContext context) : IRoleRepository
         }
         return roles;
     }
+
+    public async Task<Role?> GetAsync(Guid id)
+    {
+        var role = await _context.Roles.Include(role => role.Permissions).Where(r => r.Id == id.ToString()).FirstOrDefaultAsync();
+        return role;
+    }
+
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return await _context.SaveChangesAsync(cancellationToken);
+    }
 }

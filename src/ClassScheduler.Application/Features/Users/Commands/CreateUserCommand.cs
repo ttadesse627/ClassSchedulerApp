@@ -35,7 +35,6 @@ public class CreateUserCommandHandler(IUserRepository userRepository, IRoleRepos
                 var roles = await _roleRepository.GetRolesAsync(request.UserRequest.RoleIds);
                 var userEntity = new User
                 {
-                    Id = Guid.NewGuid().ToString(),
                     UserName = request.UserRequest.Username,
                     Email = request.UserRequest.Email,
                     PersonInfo = personInfo,

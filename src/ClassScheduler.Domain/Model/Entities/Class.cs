@@ -1,18 +1,15 @@
-
-
-using ClassScheduler.Domain.Model.Entities.Base;
-
 namespace ClassScheduler.Domain.Model.Entities;
-public class Class : BaseAuditableEntity
+public class Class
 {
-    public DateTime Time { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public Guid CourseId { get; set; }
+    public required Course Course { get; set; }
     public Guid RoomId { get; set; }
-    public int ECTS { get; set; }
-
-    // References
-    public Guid DepatmentId { get; set; }
-    public Department? Department { get; set; }
-    public ICollection<Instructor>? Instructors { get; set; }
-    public ICollection<Student>? Students { get; set; }
+    public required Room Room { get; set; }
+    public Guid DepartmentId { get; set; }
+    public required Department Department { get; set; }
+    public Guid TimePeriodId { get; set; }
+    public required TimePeriod TimePeriod { get; set; }
+    public required Instructor Instructor { get; set; }
+    public ICollection<Student> Students { get; set; } = [];
 }

@@ -1,8 +1,3 @@
-using ClassScheduler.Application.Contracts.ResponseDtos.Common;
-using ClassScheduler.Application.Interfaces.Persistence;
-using ClassScheduler.Domain.Model.Entities;
-using MediatR;
-
 namespace ClassScheduler.Application.Features.Courses.Command.Create;
 public record CreateCourseRequest
 {

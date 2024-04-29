@@ -9,10 +9,12 @@ public class Course : BaseAuditableEntity
     public string CourseCode { get; set; } = null!;
     public int CreditHours { get; set; }
     public int ECTS { get; set; }
+    public int LabHours { get; set; }
+    public int LectureHours { get; set; }
 
     // References
     public Guid DepatmentId { get; set; }
     public Department? Department { get; set; }
-    public ICollection<Instructor>? Instructors { get; set; }
-    public ICollection<Student>? Students { get; set; }
+    public ICollection<Instructor> Instructors { get; set; } = [];
+    public ICollection<Student> Students { get; set; } = [];
 }

@@ -17,6 +17,7 @@ public class CreateCourseCommandHandler(ICourseRepository courseRepository) : IR
     {
         var response = new ServiceResponse<int>();
         IList<Course> courses = [];
+        Console.WriteLine(request);
         if (request.Courses.Count > 0)
         {
             foreach (var course in request.Courses)
@@ -32,7 +33,7 @@ public class CreateCourseCommandHandler(ICourseRepository courseRepository) : IR
                 courses.Add(courseEntity);
             }
             response.Success = await _courseRepository.CreateAsync(courses);
-            if(response.Success)
+            if (response.Success)
             {
                 response.Message = "Successfully created course/s";
                 response.Data = 1;
@@ -42,7 +43,6 @@ public class CreateCourseCommandHandler(ICourseRepository courseRepository) : IR
                 response.Message = "Couldn't created course/s";
                 response.Errors.Add("Couldn't created course/s");
             }
-
         }
         else
         {

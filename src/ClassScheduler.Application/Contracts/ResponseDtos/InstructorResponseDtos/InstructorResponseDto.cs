@@ -4,8 +4,8 @@ namespace ClassScheduler.Application.Contracts.ResponseDtos.InstructorResponseDt
 public record InstructorResponseDto
 {
     public Guid Id { get; set; }
-    public string FirstName { get; set; } = null!;
-    public string MiddleName { get; set; } = null!;
+    public string? FirstName { get; set; }
+    public string? MiddleName { get; set; }
     public string? LastName { get; set; }
     public DateTime BirthDate { get; set; }
     public DateTime CreatedDate { get; set; }

@@ -27,7 +27,9 @@ public class InstructorRepository(ClassSchedulerDbContext dbContext) : IInstruct
 
     public async Task<IList<Instructor>> GetListAsync()
     {
-        var response = await _context.Instructors.ToListAsync();
+        var response = await _context.Instructors
+            .Include(inst => inst.PersonInfo)
+            .Include(inst => inst.Courses).ToListAsync();
         return response;
     }
     public async Task<Instructor?> GetAsync(Guid id)

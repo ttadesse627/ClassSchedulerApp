@@ -2,41 +2,47 @@ using ClassScheduler.Application.Contracts.RequestDtos.RoleRequestDtos;
 using ClassScheduler.Application.Contracts.ResponseDtos.Common;
 using ClassScheduler.Application.Interfaces.Persistence;
 using ClassScheduler.Domain.Model.Entities;
-using MapsterMapper;
 using MediatR;
 
 namespace ClassScheduler.Application.Features.Roles;
-public record CreateRoleCommand(CreateRoleRequest RoleRequest) : IRequest<ServiceResponse<int>> { }
-public class CreateRoleCommandHandler(IRoleRepository roleRepository, IMapper mapper) : IRequestHandler<CreateRoleCommand, ServiceResponse<int>>
+public record CreateRoleCommand : IRequest<ServiceResponse<int>>
+{
+    public required string Name { get; set; }
+    public ICollection<PermissionRequest> Permissions { get; set; } = [];
+}
+public class CreateRoleCommandHandler(IRoleRepository roleRepository) : IRequestHandler<CreateRoleCommand, ServiceResponse<int>>
 {
     private readonly IRoleRepository _roleRepository = roleRepository;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<ServiceResponse<int>> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<int>();
-        if (request.RoleRequest is not null)
+        var permissions = new List<Permission>();
+        if (!string.IsNullOrEmpty(request.Name))
         {
-            if (!string.IsNullOrEmpty(request.RoleRequest.Name))
+            if (request.Permissions.Count > 0)
             {
-                var roleEntity = new Role
+                foreach (var permission in request.Permissions)
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = request.RoleRequest.Name,
-                    Permissions = _mapper.Map<List<Permission>>(request.RoleRequest.Permissions),
-                };
-                var resp = await _roleRepository.CreateRoleAsync(role: roleEntity, cancellationToken);
-                response.Data = resp.Data;
-                response.Message = resp.Message;
-                response.Errors = resp.Errors;
-                response.Success = resp.Success;
-
+                    permissions.Add(new Permission { Name = permission.Name, Actions = permission.Actions });
+                }
             }
-            else
+            var roleEntity = new Role
             {
-                response.Message = "The role name should not be null or empty!";
-                response.Errors.Add(response.Message);
-            }
+                Name = request.Name,
+                Permissions = permissions
+            };
+            var resp = await _roleRepository.CreateRoleAsync(role: roleEntity, cancellationToken);
+            response.Data = resp.Data;
+            response.Message = resp.Message;
+            response.Errors = resp.Errors;
+            response.Success = resp.Success;
+
+        }
+        else
+        {
+            response.Message = "The role name should not be null or empty!";
+            response.Errors.Add(response.Message);
         }
 
         return response;

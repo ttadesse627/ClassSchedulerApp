@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using ClassScheduler.Application.Interfaces.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,13 +14,13 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScope) :
             return;
         }
 
-        using IServiceScope serviceScope = _serviceScope.CreateScope();
-        IPermissionRepository permissionRepository = serviceScope.ServiceProvider.GetRequiredService<IPermissionRepository>();
-        HashSet<string> permissions = await permissionRepository.GetPermissionAsync(parsedUserId.ToString());
+        // using IServiceScope serviceScope = _serviceScope.CreateScope();
+        // // IPermissionRepository permissionRepository = serviceScope.ServiceProvider.GetRequiredService<IPermissionRepository>();
+        // HashSet<string> permissions = await permissionRepository.GetPermissionAsync(parsedUserId.ToString());
 
-        if (permissions.Contains(requirement.Permission))
-        {
-            context.Succeed(requirement);
-        }
+        // if (permissions.Contains(requirement.Permission))
+        // {
+        //     context.Succeed(requirement);
+        // }
     }
 }

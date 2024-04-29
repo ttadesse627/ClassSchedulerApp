@@ -7,9 +7,16 @@ namespace ClassScheduler.API.Controllers;
 public class AuthController(ISender sender) : ApiController
 {
     private readonly ISender _sender = sender;
+
+    [HttpPost("Login")]
     public async Task<ActionResult<AuthResponseDto>> Login(AuthCommand command)
     {
-        return Ok(await _sender.Send(command));
+        var response = await _sender.Send(command);
+        if (response is not null)
+        {
+            return Ok(response);
+        }
+        return Forbid("Invalid Credentials");
     }
 
 }

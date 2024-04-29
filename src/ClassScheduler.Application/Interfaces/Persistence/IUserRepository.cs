@@ -6,5 +6,5 @@ public interface IUserRepository
 {
     public Task<ServiceResponse<int>> CreateUserAsync(User user, string password);
     public Task<User?> GetByEmailAsync(string email);
-    public Task<(Result result, IList<string>? roles, string? userId)> AuthenticateUser(string userName, string password);
+    public Task<(Result result, User? user)> AuthenticateUser(string userName, string password);
 }

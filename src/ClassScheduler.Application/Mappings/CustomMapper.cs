@@ -26,7 +26,6 @@ namespace ClassScheduler.Application.Mappings
             config.NewConfig<Course, CourseResponseDto>();
             config.NewConfig<EditDepartmentRequestDto, Department>();
             config.NewConfig<EditRoomRequestDto, Room>();
-            config.NewConfig<List<CreatePermissionRequest>, List<Permission>>();
             config.NewConfig<List<Room>, List<RoomResponseDto>>();
             config.NewConfig<List<Instructor>, List<InstructorResponseDto>>();
         }

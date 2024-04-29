@@ -1,6 +1,3 @@
-
-
-
 using ClassScheduler.Domain.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,6 +17,11 @@ public class StudentEntityConfig : IEntityTypeConfiguration<Student>
         builder.HasOne(student => student.User)
             .WithOne(user => user.Student)
             .HasForeignKey<Student>(student => student.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(student => student.PersonInfo)
+            .WithOne(personInfo => personInfo.Student)
+            .HasForeignKey<Student>(student => student.PersonInfoId)
             .OnDelete(DeleteBehavior.SetNull);
     }
 }

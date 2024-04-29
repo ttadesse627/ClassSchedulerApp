@@ -1,10 +1,11 @@
 
 @host = http://127.0.0.1:8080
+#1. Department Requests
 
-### #Department Requests
+###1a. Get department for course assignment 
 GET {{host}}/api/Department/GetForCourse
 
-### Create Department
+###1b. Create department
 POST {{host}}/api/Department/Create HTTP/1.1
 Content-Type: application/json
 
@@ -16,13 +17,69 @@ Content-Type: application/json
   "courses": [
   ]
 }
-### Course Requests
-GET {{host}}/api/Course/GetAll
 
-###
+#2. Room Requests
+###2a. Create room request
+POST {{host}}/api/Room/Create HTTP/1.1
+Content-Type: application/json
+
+{
+  "roomNumber": "R015",
+  "blockNumber": "B01",
+  "roomType": "Lab"
+}
+
+###2b. Get room request
+GET {{host}}/api/Room/GetAll
+
+#3. Instructor Requests
+###3a. Create instructor request
+POST {{host}}/api/Instructor/Create HTTP/1.1
+Content-Type: application/json
+
+{
+  "FirstName": "Tolcha",
+  "middleName": "Duguma",
+  "LastName": "Gemta",
+  "BirthDate": "1995-10-24",
+  "CourseIds" : ["7a900129-bc80-47c8-a52d-e0184993e651"]
+
+}
+
+###3b. Get instructors
+GET {{host}}/api/Instructor/GetAll
+
+###3c. Delete instructor by id
+DELETE {{host}}/api/Instructor/Delete/6e6efbfe-580c-4aef-81a3-dd2a605d91a2
+
+#4. Course Requests
+###4a. Create course request
+POST {{host}}/api/Course/Create
+Content-Type: application/json
+
+{
+  "command": {
+    "courses": [
+      {
+        "name": "Digital Logic Design",
+        "courseCode": "SE1012",
+        "creditHours": 3,
+        "ects": 5
+      }
+    ],
+    "departmentId": "7995f3c6-ee84-413b-ba9b-fed9941e2604"
+  }
+}
+
+###4b. Get course request
+GET {{host}}/api/Course/GetAll
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI4YzdmNzIyNy01ODNmLTQ1MTYtYTQyOS05MmY0ZWYzY2U0OWUiLCJzdWIiOiJkdWxhIiwianRpIjoiRHVsYSIsImV4cCI6MTcxMzk5Nzc3NiwiaXNzIjoiQ2xhc3NTY2hlZHVsZXIiLCJhdWQiOiJDbGFzc1NjaGVkdWxlciJ9.3bPo4EDma3Do2N2jnwjfgOJCg8bGnrdf6JsLbqPzygk
+
+###4c. Delete course request
 DELETE {{host}}/api/Course/Delete/
 
-### User Request
+#5. User Request
+###5a. Create user request
 POST {{host}}/api/User/Create HTTP/1.1
 Content-Type: application/json
 
@@ -41,5 +98,54 @@ Content-Type: application/json
     "c200d6f4-f6d4-4997-aea7-fde8ef78e37d"
   ]
 }
+###5b. Get all users request
+POST {{host}}/api/Auth/Login HTTP/1.1
+Content-Type: application/json
 
+{
+  "username": "dula",
+  "password": "dulaCh@123"
+}
+
+###5b. Get all users request
+GET {{host}}/api/User/GetAll HTTP/1.1
+
+
+#6. Schedule Requests
+###6a. Get schedule request
+GET {{host}}/api/Schedule/GetSchedules/008151a3-121a-4959-9755-d34125b5a9b7
+
+###6a. Get schedule request
+POST {{host}}/api/Schedule/GenerateSchedule
+
+
+#7. Schedule Requests
+###7a. Get schedule request
+GET {{host}}/api/Role/GetAll
+
+###7a. Get schedule request
+GET {{host}}/api/Role/Get/c200d6f4-f6d4-4997-aea7-fde8ef78e37d
+
+###7a. Get schedule request
+PUT {{host}}/api/Role/Update/c200d6f4-f6d4-4997-aea7-fde8ef78e37d
+Content-Type: application/json
+
+{
+  "id": "c200d6f4-f6d4-4997-aea7-fde8ef78e37d",
+  "name": "Staffs",
+  "permissions": [
+    {
+      "name": "Course",
+      "actions": ["CanWrite","CanRead","CanReadDetail","CanUpdate"]
+    },
+    {
+      "name": "Department",
+      "actions": ["CanWrite","CanRead","CanReadDetail","CanUpdate"]
+    },
+    {
+      "name": "Room",
+      "actions": ["CanWrite","CanRead","CanReadDetail","CanUpdate","CanDelete"]
+    }
+  ]
+}
 

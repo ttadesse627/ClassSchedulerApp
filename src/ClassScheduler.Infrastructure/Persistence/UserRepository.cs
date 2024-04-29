@@ -20,7 +20,7 @@ public class UserRepository(ClassSchedulerDbContext context, UserManager<User> u
         var resp = await _userManager.CreateAsync(user, password);
         if (resp.Succeeded)
         {
-            await _userManager.AddClaimAsync(user, new Claim(JwtRegisteredClaimNames.Jti, user.Id));
+            await _userManager.AddClaimAsync(user, new Claim(CustomClaims.UserId, user.Id));
             response.Data = 1;
             response.Success = resp.Succeeded;
             response.Message = "User created successfully!";
@@ -46,20 +46,19 @@ public class UserRepository(ClassSchedulerDbContext context, UserManager<User> u
         return user!;
     }
 
-    public async Task<(Result result, IList<string>? roles, string? userId)> AuthenticateUser(string userName, string password)
+    public async Task<(Result result, User? user)> AuthenticateUser(string userName, string password)
+    {
+        var user = await _context.Users.Include(user => user.PersonInfo).Include(user => user.Roles).Where(user => user.UserName == userName).FirstOrDefaultAsync();
+
+        if (user != null && await _userManager.CheckPasswordAsync(user, password))
         {
-            var user = await _userManager.FindByNameAsync(userName);
-
-
-            if (user != null && await _userManager.CheckPasswordAsync(user, password))
-            {
-                var userRoles = await _userManager.GetRolesAsync(user);
-                return (Result.Success(), userRoles, user.Id);
-
-            }
-            string[] errors = ["Invalid login"];
-
-            return (Result.Failure(errors), null, null);
+            // var userRoles = await _userManager.GetRolesAsync(user);
+            return (Result.Success(), user);
 
         }
+        string[] errors = ["Invalid login"];
+
+        return (Result.Failure(errors), null);
+
+    }
 }

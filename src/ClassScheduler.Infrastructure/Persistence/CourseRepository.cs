@@ -41,7 +41,7 @@ public class CourseRepository(ClassSchedulerDbContext context) : ICourseReposito
         }
         catch (Exception exc)
         {
-            
+
             throw new DbUpdateException("Error occurred while saving an entity changes: ", exc);
         }
         return false;
@@ -52,8 +52,18 @@ public class CourseRepository(ClassSchedulerDbContext context) : ICourseReposito
         return await _context.Courses.Include(course => course.Department).ToListAsync();
     }
 
+    public async Task<List<Course>> GetByIdsAsync(List<Guid> ids)
+    {
+        return await _context.Courses.Where(course => ids.Contains(course.Id)).ToListAsync();
+    }
+
     public async Task<Course?> GetAsync(Guid Id)
     {
         return await _context.Courses.FindAsync(Id);
+    }
+
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return await _context.SaveChangesAsync(cancellationToken);
     }
 }
