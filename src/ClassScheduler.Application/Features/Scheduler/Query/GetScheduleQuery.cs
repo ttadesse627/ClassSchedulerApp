@@ -3,26 +3,26 @@ using ClassScheduler.Application.Interfaces.Persistence;
 using MediatR;
 
 namespace ClassScheduler.Application.Features.Scheduler.Query;
-public record GetScheduleQuery(Guid DepartmentId) : IRequest<List<DepartmentClassesDto>> { }
-public class GetScheduleQueryHandler(IClassRepository classRepository) : IRequestHandler<GetScheduleQuery, List<DepartmentClassesDto>>
+public record GetScheduleQuery(Guid SectionId) : IRequest<List<SectionClassesDto>> { }
+public class GetScheduleQueryHandler(IClassRepository classRepository) : IRequestHandler<GetScheduleQuery, List<SectionClassesDto>>
 {
     private readonly IClassRepository _classRepository = classRepository;
 
-    public async Task<List<DepartmentClassesDto>> Handle(GetScheduleQuery query, CancellationToken cancellationToken)
+    public async Task<List<SectionClassesDto>> Handle(GetScheduleQuery query, CancellationToken cancellationToken)
     {
-        List<DepartmentClassesDto> departmentClassesDtos = [];
+        List<SectionClassesDto> sectionClassesDtos = [];
 
-        var deptClasses = await _classRepository.GetByDepartmentAsync(query.DepartmentId);
-        foreach (var deptCls in deptClasses.GroupBy(cl => cl.Department))
+        var sectionClasses = await _classRepository.GetBySectionAsync(query.SectionId);
+        foreach (var deptCls in sectionClasses.GroupBy(cl => cl.Section))
         {
-            departmentClassesDtos.Add(new DepartmentClassesDto
+            sectionClassesDtos.Add(new SectionClassesDto
             {
                 Id = deptCls.Key.Id,
                 Name = deptCls.Key.Name,
-                ShortName = deptCls.Key.ShortName,
-                DayGroups = deptCls.GroupBy(cl => cl.TimePeriod.Day).Select(dg => new DayGroupDto
+                ShortName = deptCls.Key.Name,
+                DayGroups = deptCls.GroupBy(cl => cl.TimeSlot.Day).Select(dg => new DayGroupDto
                 {
-                    Day = dg.Key,
+                    Day = dg.Key.ToString(),
                     Classes = dg.Select(cls => new ClassDto
                     {
                         Id = cls.Id,
@@ -30,31 +30,31 @@ public class GetScheduleQueryHandler(IClassRepository classRepository) : IReques
                         {
                             Id = cls.Course.Id,
                             Name = cls.Course.Name,
-                            CourseCode = cls.Course.CourseCode,
-                            CreditHours = cls.Course.CreditHours
+                            Code = cls.Course.Code,
+                            CreditHour = cls.Course.CreditHour
                         },
                         Room = new RoomDto
                         {
                             Id = cls.Room.Id,
-                            RoomName = cls.Room.RoomType.ToString() + "-" + cls.Room.RoomNumber,
+                            RoomName = cls.Room.RoomType.ToString() + "-" + cls.Room.Code,
                         },
-                        TimePeriod = new TimePeriodDto
+                        TimeSlot = new TimeSlotDto
                         {
-                            Id = cls.TimePeriod.Id,
-                            Day = cls.TimePeriod.Day,
-                            Time = cls.TimePeriod.StartTime + " - " + cls.TimePeriod.EndTime,
+                            Id = cls.TimeSlot.Id,
+                            Day = cls.TimeSlot.Day.ToString(),
+                            Time = cls.TimeSlot.StartTime + " - " + cls.TimeSlot.EndTime,
                         },
                         Instructor = new InstructorDto
                         {
                             Id = cls.Instructor.Id,
-                            Name = cls.Instructor.PersonInfo?.FirstName + " " + cls.Instructor.PersonInfo?.MiddleName + " " + cls.Instructor.PersonInfo?.LastName
+                            Name = cls.Instructor.Person?.FirstName + " " + cls.Instructor.Person?.MiddleName + " " + cls.Instructor.Person?.LastName
                         },
                     }).ToList()
                 }).ToList(),
             });
         }
 
-        return departmentClassesDtos;
+        return sectionClassesDtos;
     }
 }
 

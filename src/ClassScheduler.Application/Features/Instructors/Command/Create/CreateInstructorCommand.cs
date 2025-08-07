@@ -27,7 +27,7 @@ public class CreateInstructorCommandHandler(IInstructorRepository instructorRepo
             }
             var instructorEntity = new Instructor
             {
-                PersonInfo = new PersonInfo
+                Person = new Person
                 {
                     FirstName = request.InstructorRequestDto.FirstName,
                     MiddleName = request.InstructorRequestDto.MiddleName,

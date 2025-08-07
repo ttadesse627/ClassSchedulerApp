@@ -5,25 +5,32 @@ namespace ClassScheduler.Application.Features.Scheduler.Common;
 public class DataSource
 {
     public ICollection<Department> Departments { get; set; } = [];
+    public ICollection<DeptBatch> DeptBatches { get; set; } = [];
+    public ICollection<Section> Sections { get; set; } = [];
     public ICollection<Course> Courses { get; set; } = [];
     public ICollection<Room> Rooms { get; set; } = [];
     public ICollection<Instructor> Instructors { get; set; } = [];
-    public ICollection<TimePeriod> TimePeriods { get; set; } = [];
+    public ICollection<TimeSlot> TimeSlots { get; set; } = [];
 
     private readonly IDepartmentRepository _departmentRepository;
+    private readonly IDeptBatchRepository _deptBatchRepository;
+    private readonly ISectionRepository _sectionRepository;
     private readonly ICourseRepository _courseRepository;
     private readonly IInstructorRepository _instructorRepository;
     private readonly IRoomRepository _roomRepository;
-    private readonly ITimePeriodRepository _timePeriodRepository;
+    private readonly ITimeSlotRepository _timeSlotRepository;
     public int NumberOfClasses = 0;
 
-    public DataSource(IDepartmentRepository departmentRepository, ICourseRepository courseRepository, IInstructorRepository instructorRepository, IRoomRepository roomRepository, ITimePeriodRepository timePeriodRepository)
+    public DataSource(IDepartmentRepository departmentRepository, IDeptBatchRepository deptBatchRepository, ISectionRepository sectionRepository, ICourseRepository courseRepository,IInstructorRepository instructorRepository,
+        IRoomRepository roomRepository, ITimeSlotRepository TimeSlotRepository)
     {
         _departmentRepository = departmentRepository;
         _courseRepository = courseRepository;
         _instructorRepository = instructorRepository;
         _roomRepository = roomRepository;
-        _timePeriodRepository = timePeriodRepository;
+        _timeSlotRepository = TimeSlotRepository;
+        _deptBatchRepository = deptBatchRepository;
+        _sectionRepository = sectionRepository;
 
         InitializeData().GetAwaiter().GetResult();
 
@@ -32,79 +39,24 @@ public class DataSource
     }
     public async Task<DataSource> InitializeData()
     {
-        Departments = await GetDepartmentsAsync();
-        Courses = await GetCoursesAsync();
-        Rooms = await GetRoomsAsync();
-        TimePeriods = await GetPeriodsAsync();
-        Instructors = await GetInstructorsAsync();
+        Departments = await _departmentRepository.GetAllAsync()?? [];
+        DeptBatches = await _deptBatchRepository.GetAllAsync()?? [];
+        Sections = await _sectionRepository.GetAllAsync()?? [];
+        Courses = await _courseRepository.GetAllAsync()?? [];
+        Rooms = await _roomRepository.GetAllAsync()?? [];
+        TimeSlots = await _timeSlotRepository.GetAllAsync()?? [];
+        Instructors = await _instructorRepository.GetListAsync()?? [];
+        NumberOfClasses = await GetNumberOfClassesAsync();
         return this;
     }
-    public async Task<List<Department>> GetDepartmentsAsync()
-    {
-        List<Department> departments = [];
-        var depts = await _departmentRepository.GetAllAsync();
-        if (depts is not null)
-        {
-            departments = depts;
-        }
-
-        return departments;
-    }
-    public async Task<List<Course>> GetCoursesAsync()
-    {
-        List<Course> courses = [];
-        var crs = await _courseRepository.GetAllAsync();
-        if (crs is not null)
-        {
-            courses = crs;
-        }
-
-        return courses;
-    }
-    public async Task<List<Room>> GetRoomsAsync()
-    {
-        List<Room> rooms = [];
-        var rms = await _roomRepository.GetAllAsync();
-        if (rms is not null)
-        {
-            rooms = rms;
-        }
-        Rooms = rooms;
-        return rooms;
-    }
-    public async Task<List<Instructor>> GetInstructorsAsync()
-    {
-        IList<Instructor> instructors = [];
-        var instrctrs = await _instructorRepository.GetListAsync();
-        if (instrctrs is not null)
-        {
-            instructors = instrctrs;
-        }
-
-        Instructors = instructors;
-        return [.. instructors];
-    }
-    public async Task<List<TimePeriod>> GetPeriodsAsync()
-    {
-        List<TimePeriod> timePeriods = [];
-        var periods = await _timePeriodRepository.GetAllAsync();
-        if (periods is not null)
-        {
-            timePeriods = periods;
-        }
-
-        TimePeriods = timePeriods;
-
-        return timePeriods;
-    }
-    public async Task<int> GetNumberOfClasses()
+    public async Task<int> GetNumberOfClassesAsync()
     {
         await Task.CompletedTask;
-        if (Departments.Count > 0)
+        if (DeptBatches.Count > 0)
         {
-            foreach (var department in Departments)
+            foreach (var batch in DeptBatches)
             {
-                NumberOfClasses += department.Courses.Count;
+                NumberOfClasses += batch.Courses.Count;
             }
         }
 

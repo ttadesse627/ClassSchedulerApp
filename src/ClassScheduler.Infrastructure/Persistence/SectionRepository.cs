@@ -4,43 +4,39 @@ using ClassScheduler.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClassScheduler.Infrastructure.Persistence;
-public class DepartmentRepository(ClassSchedulerDbContext context) : CommonRepository<Department>(context), IDepartmentRepository
+public class SectionRepository(ClassSchedulerDbContext context) : CommonRepository<Section>(context), ISectionRepository
 {
     private readonly ClassSchedulerDbContext _context = context;
 
-    public async Task<bool> CreateDepartmentAsync(Department department)
+    public async Task<bool> CreateSectionAsync(Section section)
     {
         bool response = false;
-        if (department != null)
+        if (section != null)
         {
-            _context.Departments.Add(department);
+            _context.Sections.Add(section);
             var affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0) response = true;
         }
 
         return response;
     }
-    public async Task<List<Department>> GetAllAsync()
+    public async Task<List<Section>> GetAllAsync()
     {
-        return await _context.Departments.ToListAsync();
-    }
-    public async Task<List<Department>> GetForCourseAsync()
-    {
-        return await _context.Departments.ToListAsync();
+        return await _context.Sections.ToListAsync();
     }
 
-    public async Task<Department> GetAsync(Guid id)
+    public async Task<Section> GetAsync(Guid id)
     {
-        var department = await _context.Departments!.FindAsync(id);
-        return department;
+        var section = await _context.Sections.FindAsync(id);
+        return section;
     }
 
-    public async Task<bool> DeleteAsync(Department department)
+    public async Task<bool> DeleteAsync(Section section)
     {
         bool success = false;
-        if (department is not null)
+        if (section is not null)
         {
-            _context.Departments!.Remove(department);
+            _context.Sections.Remove(section);
             int affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0)
             {
@@ -49,12 +45,12 @@ public class DepartmentRepository(ClassSchedulerDbContext context) : CommonRepos
         }
         return success;
     }
-    public async Task<bool> UpdateAsync(Department department)
+    public async Task<bool> UpdateAsync(Section section)
     {
         bool success = false;
-        if (department is not null)
+        if (section is not null)
         {
-            _context.Departments!.Update(department);
+            _context.Sections.Update(section);
             int affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0)
             {

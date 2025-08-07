@@ -1,12 +1,12 @@
 using ClassScheduler.Domain.Model.Entities;
 
 namespace ClassScheduler.Application.Interfaces.Persistence;
-public interface ITimePeriodRepository
+public interface ITimeSlotRepository
 {
-    public Task<bool> CreateAsync(TimePeriod timePeriod);
-    public Task<bool> CreateMultiAsync(IList<TimePeriod> timePeriods);
-    public Task<List<TimePeriod>> GetAllAsync();
-    public Task<TimePeriod?> GetAsync(Guid id);
-    public Task<bool> DeleteAsync(TimePeriod timePeriod);
-    public Task<bool> UpdateAsync(TimePeriod timePeriod);
+    public Task<bool> CreateAsync(TimeSlot TimeSlot);
+    public Task<bool> CreateMultiAsync(IList<TimeSlot> TimeSlots);
+    public Task<List<TimeSlot>> GetAllAsync();
+    public Task<TimeSlot?> GetAsync(Guid id);
+    public Task<bool> DeleteAsync(TimeSlot TimeSlot);
+    public Task<bool> UpdateAsync(TimeSlot TimeSlot);
 }

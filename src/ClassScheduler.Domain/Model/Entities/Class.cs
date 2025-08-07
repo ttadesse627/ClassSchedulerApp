@@ -6,10 +6,10 @@ public class Class
     public required Course Course { get; set; }
     public Guid RoomId { get; set; }
     public required Room Room { get; set; }
-    public Guid DepartmentId { get; set; }
-    public required Department Department { get; set; }
-    public Guid TimePeriodId { get; set; }
-    public required TimePeriod TimePeriod { get; set; }
+    public Guid SectionId { get; set; }
+    public required Section Section { get; set; }
+    public Guid TimeSlotId { get; set; }
+    public required TimeSlot TimeSlot { get; set; }
+    public Guid InstructorId { get; set; }
     public required Instructor Instructor { get; set; }
-    public ICollection<Student> Students { get; set; } = [];
 }

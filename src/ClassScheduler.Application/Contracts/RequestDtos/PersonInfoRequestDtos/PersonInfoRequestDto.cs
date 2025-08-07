@@ -1,7 +1,7 @@
 
 
-namespace ClassScheduler.Application.Contracts.PersonInfoDtos;
-public record PersonInfoRequestDto
+namespace ClassScheduler.Application.Contracts.PersonDtos;
+public record PersonRequestDto
 {
     public required string FirstName { get; set; }
     public string? MiddleName { get; set; }

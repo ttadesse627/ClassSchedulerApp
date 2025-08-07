@@ -5,6 +5,6 @@ public record DepartmentDto
     public string? DepartmentName { get; set; }
     public CourseDto? Course { get; set; }
     public RoomDto? Room { get; set; }
-    public TimePeriodDto? TimePeriod { get; set; }
+    public TimeSlotDto? TimeSlot { get; set; }
     public InstructorDto? Instructor { get; set; }
 }

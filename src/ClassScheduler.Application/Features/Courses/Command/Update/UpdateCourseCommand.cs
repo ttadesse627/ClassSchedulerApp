@@ -6,11 +6,13 @@ namespace ClassScheduler.Application.Features.Courses.Command.Create;
 public record UpdateCourseCommand : IRequest<ServiceResponse<int>>
 {
     public Guid Id { get; set; }
-    public required string Name { get; set; }
-    public required string CourseCode { get; set; }
-    public int CreditHours { get; set; }
+    public string Name { get; set; } = null!;
+    public string Code { get; set; } = null!;
+    public int CreditHour { get; set; }
     public int ECTS { get; set; }
-    public Guid DepartmentId { get; set; }
+    public int LabHour { get; set; }
+    public int LectureHour { get; set; }
+    public Guid DeptBatchId { get; set; }
 }
 
 public class UpdateCourseCommandHandler(ICourseRepository courseRepository) : IRequestHandler<UpdateCourseCommand, ServiceResponse<int>>
@@ -26,10 +28,12 @@ public class UpdateCourseCommandHandler(ICourseRepository courseRepository) : IR
             if (course is not null)
             {
                 course.Name = request.Name;
-                course.CourseCode = request.CourseCode;
-                course.CreditHours = request.CreditHours;
+                course.Code = request.Code;
+                course.CreditHour = request.CreditHour;
                 course.ECTS = request.ECTS;
-                course.DepatmentId = request.DepartmentId;
+                course.LabHour = request.LabHour;
+                course.LectureHour = request.LectureHour;
+                course.DeptBatchId = request.DeptBatchId;
             }
 
             var resp = await _courseRepository.SaveChangesAsync(cancellationToken);

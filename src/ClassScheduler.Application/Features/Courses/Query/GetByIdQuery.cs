@@ -21,10 +21,10 @@ public class GetByIdQueryHandler(ICourseRepository courseRepository) : IRequestH
                 {
                     Id = courseEntity.Id,
                     Name = courseEntity.Name,
-                    CourseCode = courseEntity.CourseCode,
-                    CreditHours = courseEntity.CreditHours,
+                    Code = courseEntity.Code,
+                    CreditHour = courseEntity.CreditHour,
                     ECTS = courseEntity.ECTS,
-                    DepartmentName = courseEntity.Department?.ShortName
+                    BatchName = courseEntity.DeptBatch?.Name
                 };
             }
             else

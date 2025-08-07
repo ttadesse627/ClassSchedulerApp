@@ -20,15 +20,15 @@ public class CreateUserCommandHandler(IUserRepository userRepository, IRoleRepos
         {
             if (!string.IsNullOrEmpty(request.UserRequest.Username?.Trim()) || !string.IsNullOrEmpty(request.UserRequest.Password.Trim()))
             {
-                PersonInfo? personInfo = null;
-                if (request.UserRequest.PersonInfo is not null)
+                Person? Person = null;
+                if (request.UserRequest.Person is not null)
                 {
-                    personInfo = new PersonInfo
+                    Person = new Person
                     {
-                        FirstName = request.UserRequest.PersonInfo.FirstName,
-                        MiddleName = request.UserRequest.PersonInfo.MiddleName,
-                        LastName = request.UserRequest.PersonInfo.LastName,
-                        BirthDate = request.UserRequest.PersonInfo.BirthDate,
+                        FirstName = request.UserRequest.Person.FirstName,
+                        MiddleName = request.UserRequest.Person.MiddleName,
+                        LastName = request.UserRequest.Person.LastName,
+                        BirthDate = request.UserRequest.Person.BirthDate,
                     };
                 }
 
@@ -37,7 +37,7 @@ public class CreateUserCommandHandler(IUserRepository userRepository, IRoleRepos
                 {
                     UserName = request.UserRequest.Username,
                     Email = request.UserRequest.Email,
-                    PersonInfo = personInfo,
+                    Person = Person,
                     Roles = roles
                 };
 

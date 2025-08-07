@@ -11,17 +11,15 @@ public class StudentEntityConfig : IEntityTypeConfiguration<Student>
         builder.HasMany(student => student.Courses)
             .WithMany(course => course.Students);
 
-        builder.HasMany(student => student.Departments)
-            .WithMany(department => department.Students);
+        builder.HasMany(student => student.DeptBatches)
+            .WithMany(batch => batch.Students);
 
-        builder.HasOne(student => student.User)
-            .WithOne(user => user.Student)
-            .HasForeignKey<Student>(student => student.UserId)
-            .OnDelete(DeleteBehavior.SetNull);
+        builder.HasMany(student => student.Sections)
+            .WithMany(batch => batch.Students);
 
-        builder.HasOne(student => student.PersonInfo)
-            .WithOne(personInfo => personInfo.Student)
-            .HasForeignKey<Student>(student => student.PersonInfoId)
+        builder.HasOne(student => student.Person)
+            .WithOne(Person => Person.Student)
+            .HasForeignKey<Student>(student => student.PersonId)
             .OnDelete(DeleteBehavior.SetNull);
     }
 }

@@ -7,8 +7,8 @@ using MediatR;
 namespace ClassScheduler.Application.Features.Rooms.Command.Create;
 public record CreateRoomCommand : IRequest<ServiceResponse<int>>
 {
-    public required string RoomNumber { get; set; }
-    public string? BlockNumber { get; set; }
+    public required string Code { get; set; }
+    public bool IsAvailable { get; set; } = true;
     public RoomType RoomType { get; set; }
 }
 public class CreateRoomCommandHandler(IRoomRepository roomRepository) : IRequestHandler<CreateRoomCommand, ServiceResponse<int>>
@@ -20,8 +20,8 @@ public class CreateRoomCommandHandler(IRoomRepository roomRepository) : IRequest
 
         var roomEntity = new Room
         {
-            RoomNumber = command.RoomNumber,
-            BlockNumber = command.BlockNumber,
+            Code = command.Code,
+            IsAvailable = command.IsAvailable,
             RoomType = command.RoomType
         };
 

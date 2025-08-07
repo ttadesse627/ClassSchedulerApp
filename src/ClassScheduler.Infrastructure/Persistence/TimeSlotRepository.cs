@@ -4,28 +4,28 @@ using ClassScheduler.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClassScheduler.Infrastructure.Persistence;
-public class TimePeriodRepository(ClassSchedulerDbContext context) : ITimePeriodRepository
+public class TimeSlotRepository(ClassSchedulerDbContext context) : ITimeSlotRepository
 {
     private readonly ClassSchedulerDbContext _context = context;
 
-    public async Task<bool> CreateAsync(TimePeriod timePeriod)
+    public async Task<bool> CreateAsync(TimeSlot TimeSlot)
     {
         bool response = false;
-        if (timePeriod != null)
+        if (TimeSlot != null)
         {
-            _context.TimePeriods.Add(timePeriod);
+            _context.TimeSlots.Add(TimeSlot);
             var affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0) response = true;
         }
 
         return response;
     }
-    public async Task<bool> CreateMultiAsync(IList<TimePeriod> timePeriods)
+    public async Task<bool> CreateMultiAsync(IList<TimeSlot> TimeSlots)
     {
         bool response = false;
-        if (timePeriods.Count > 0)
+        if (TimeSlots.Count > 0)
         {
-            _context.TimePeriods.AddRange(timePeriods);
+            _context.TimeSlots.AddRange(TimeSlots);
             var affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0) response = true;
         }
@@ -33,12 +33,12 @@ public class TimePeriodRepository(ClassSchedulerDbContext context) : ITimePeriod
         return response;
     }
 
-    public async Task<bool> DeleteAsync(TimePeriod timePeriod)
+    public async Task<bool> DeleteAsync(TimeSlot TimeSlot)
     {
         bool success = false;
-        if (timePeriod is not null)
+        if (TimeSlot is not null)
         {
-            _context.TimePeriods.Remove(timePeriod);
+            _context.TimeSlots.Remove(TimeSlot);
             int affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0)
             {
@@ -48,23 +48,23 @@ public class TimePeriodRepository(ClassSchedulerDbContext context) : ITimePeriod
         return success;
     }
 
-    public async Task<List<TimePeriod>> GetAllAsync()
+    public async Task<List<TimeSlot>> GetAllAsync()
     {
-        return await _context.TimePeriods.ToListAsync();
+        return await _context.TimeSlots.ToListAsync();
     }
 
-    public async Task<TimePeriod?> GetAsync(Guid id)
+    public async Task<TimeSlot?> GetAsync(Guid id)
     {
-        var timePeriod = await _context.TimePeriods.FindAsync(id);
-        return timePeriod;
+        var TimeSlot = await _context.TimeSlots.FindAsync(id);
+        return TimeSlot;
     }
 
-    public async Task<bool> UpdateAsync(TimePeriod timePeriod)
+    public async Task<bool> UpdateAsync(TimeSlot TimeSlot)
     {
         bool success = false;
-        if (timePeriod is not null)
+        if (TimeSlot is not null)
         {
-            _context.TimePeriods.Update(timePeriod);
+            _context.TimeSlots.Update(TimeSlot);
             int affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0)
             {

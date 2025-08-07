@@ -1,5 +1,5 @@
 namespace ClassScheduler.Application.Contracts.ResponseDtos.ScheduleResponseDtos;
-public record DepartmentClassesDto
+public record SectionClassesDto
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }

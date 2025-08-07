@@ -20,7 +20,7 @@ public class AuthCommandHandler(ITokenProviderService tokenProvider, IUserReposi
         if (result.Succeeded && user is not null)
         {
             response.Id = user.Id;
-            response.FullName = user.PersonInfo?.FirstName + user.PersonInfo?.MiddleName + user.PersonInfo?.LastName;
+            response.FullName = user.Person?.FirstName + user.Person?.MiddleName + user.Person?.LastName;
             response.Username = user.UserName;
             response.Token = await _tokenProvider.GenerateJWTTokenAsync(user);
 

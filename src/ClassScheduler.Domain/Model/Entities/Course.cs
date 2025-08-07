@@ -1,20 +1,20 @@
-
-
 using ClassScheduler.Domain.Model.Entities.Base;
 
 namespace ClassScheduler.Domain.Model.Entities;
 public class Course : BaseAuditableEntity
 {
-    public string Name { get; set; } = null!;
-    public string CourseCode { get; set; } = null!;
-    public int CreditHours { get; set; }
+    public string Name { get; set; }
+    public string Code { get; set; }
+    public int CreditHour { get; set; }
     public int ECTS { get; set; }
-    public int LabHours { get; set; }
-    public int LectureHours { get; set; }
+    public int LabHour { get; set; }
+    public int LectureHour { get; set; }
 
     // References
-    public Guid DepatmentId { get; set; }
-    public Department? Department { get; set; }
+        
+    public Guid DeptBatchId { get; set; }
+    public DeptBatch? DeptBatch { get; set; }
     public ICollection<Instructor> Instructors { get; set; } = [];
     public ICollection<Student> Students { get; set; } = [];
+    public ICollection<Course> Courses { get; set; } = [];
 }

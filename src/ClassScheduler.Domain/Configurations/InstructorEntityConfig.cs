@@ -9,14 +9,9 @@ public class InstructorEntityConfig : IEntityTypeConfiguration<Instructor>
     {
         builder.HasIndex(instructor => instructor.Id).IsUnique();
 
-        builder.HasOne(instructor => instructor.User)
-            .WithOne(user => user.Instructor)
-            .HasForeignKey<Instructor>(instructor => instructor.UserId)
-            .OnDelete(DeleteBehavior.SetNull);
-
-        builder.HasOne(instructor => instructor.PersonInfo)
-            .WithOne(personInfo => personInfo.Instructor)
-            .HasForeignKey<Instructor>(instructor => instructor.PersonInfoId)
+        builder.HasOne(instructor => instructor.Person)
+            .WithOne(Person => Person.Instructor)
+            .HasForeignKey<Instructor>(instructor => instructor.PersonId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(instructor => instructor.Courses)

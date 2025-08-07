@@ -24,9 +24,9 @@ public class GetInstructorsQueryHandler(IInstructorRepository instructorReposito
                     new InstructorsResponseDto
                     {
                         Id = instructor.Id,
-                        FirstName = instructor.PersonInfo?.FirstName,
-                        MiddleName = instructor.PersonInfo?.MiddleName,
-                        LastName = instructor.PersonInfo?.LastName,
+                        FirstName = instructor.Person?.FirstName,
+                        MiddleName = instructor.Person?.MiddleName,
+                        LastName = instructor.Person?.LastName,
                         NumberOfAssignedCourses = instructor.Courses.Count
                     }
                 );

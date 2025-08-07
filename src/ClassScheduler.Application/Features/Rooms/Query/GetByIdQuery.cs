@@ -20,8 +20,7 @@ public class GetByIdQueryHandler(IRoomRepository roomRepository) : IRequestHandl
                 response.Data = new RoomResponseDto
                 {
                     Id = roomEntity.Id,
-                    RoomNumber = roomEntity.RoomNumber,
-                    BlockNumber = roomEntity.BlockNumber,
+                    Code = roomEntity.Code,
                     RoomType = roomEntity.RoomType,
                     IsAvailable = roomEntity.IsAvailable
                 };

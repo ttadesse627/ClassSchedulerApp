@@ -4,43 +4,43 @@ using ClassScheduler.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClassScheduler.Infrastructure.Persistence;
-public class DepartmentRepository(ClassSchedulerDbContext context) : CommonRepository<Department>(context), IDepartmentRepository
+public class DeptBatchRepository(ClassSchedulerDbContext context) : CommonRepository<DeptBatch>(context), IDeptBatchRepository
 {
     private readonly ClassSchedulerDbContext _context = context;
 
-    public async Task<bool> CreateDepartmentAsync(Department department)
+    public async Task<bool> CreateDeptBatchAsync(DeptBatch batch)
     {
         bool response = false;
-        if (department != null)
+        if (batch != null)
         {
-            _context.Departments.Add(department);
+            _context.Batches.Add(batch);
             var affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0) response = true;
         }
 
         return response;
     }
-    public async Task<List<Department>> GetAllAsync()
+    public async Task<List<DeptBatch>> GetAllAsync()
     {
-        return await _context.Departments.ToListAsync();
+        return await _context.Batches.ToListAsync();
     }
-    public async Task<List<Department>> GetForCourseAsync()
+    public async Task<List<DeptBatch>> GetForCourseAsync()
     {
-        return await _context.Departments.ToListAsync();
-    }
-
-    public async Task<Department> GetAsync(Guid id)
-    {
-        var department = await _context.Departments!.FindAsync(id);
-        return department;
+        return await _context.Batches.ToListAsync();
     }
 
-    public async Task<bool> DeleteAsync(Department department)
+    public async Task<DeptBatch> GetAsync(Guid id)
+    {
+        var batch = await _context.Batches.FindAsync(id);
+        return batch!;
+    }
+
+    public async Task<bool> DeleteAsync(DeptBatch batch)
     {
         bool success = false;
-        if (department is not null)
+        if (batch is not null)
         {
-            _context.Departments!.Remove(department);
+            _context.Batches.Remove(batch);
             int affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0)
             {
@@ -49,12 +49,12 @@ public class DepartmentRepository(ClassSchedulerDbContext context) : CommonRepos
         }
         return success;
     }
-    public async Task<bool> UpdateAsync(Department department)
+    public async Task<bool> UpdateAsync(DeptBatch batch)
     {
         bool success = false;
-        if (department is not null)
+        if (batch is not null)
         {
-            _context.Departments!.Update(department);
+            _context.Batches.Update(batch);
             int affectedRows = await _context.SaveChangesAsync();
             if (affectedRows > 0)
             {

@@ -45,6 +45,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddApplication(builder.Configuration)
                 .AddInfrastructure(builder.Configuration);
 
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
@@ -56,7 +57,12 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+ 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors(x => x

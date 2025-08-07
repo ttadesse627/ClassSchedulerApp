@@ -5,11 +5,10 @@ namespace ClassScheduler.Domain.Model.Entities;
 [Table("Students")]
 public class Student : BaseAuditableEntity
 {
-    public Guid? PersonInfoId { get; set; }
-    public PersonInfo? PersonInfo { get; set; }
-    public string? UserId { get; set; }
-    public User? User { get; set; }
-    public ICollection<Department>? Departments { get; set; }
-    public ICollection<Course>? Courses { get; set; }
+    public Guid? PersonId { get; set; }
+    public Person? Person { get; set; }
+    public ICollection<DeptBatch>? DeptBatches { get; set; } = [];
+    public ICollection<Section>? Sections { get; set; } = [];
+    public ICollection<Course>? Courses { get; set; } = [];
 }
 

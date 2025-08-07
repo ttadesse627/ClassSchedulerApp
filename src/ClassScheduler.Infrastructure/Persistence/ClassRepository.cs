@@ -57,14 +57,14 @@ public class ClassRepository(ClassSchedulerDbContext context) : CommonRepository
         return false;
     }
 
-    public async Task<List<Class>> GetByDepartmentAsync(Guid departmentId)
+    public async Task<List<Class>> GetBySectionAsync(Guid sectionId)
     {
         return await _context.Classes
-            .Include(cl => cl.Department)
+            .Include(cl => cl.Section)
             .Include(cl => cl.Course)
-            .Include(cl => cl.Instructor).ThenInclude(instr => instr.PersonInfo)
+            .Include(cl => cl.Instructor).ThenInclude(instr => instr.Person)
             .Include(cl => cl.Room)
-            .Include(cl => cl.TimePeriod)
-            .Where(cls => cls.DepartmentId == departmentId).ToListAsync();
+            .Include(cl => cl.TimeSlot)
+            .Where(cls => cls.SectionId == sectionId).ToListAsync();
     }
 }

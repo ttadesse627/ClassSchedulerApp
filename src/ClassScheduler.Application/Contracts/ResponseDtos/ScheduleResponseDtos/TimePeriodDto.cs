@@ -1,5 +1,5 @@
 namespace ClassScheduler.Application.Contracts.ResponseDtos.ScheduleResponseDtos;
-public record TimePeriodDto
+public record TimeSlotDto
 {
     public Guid Id { get; set; }
     public string? Day { get; set; }

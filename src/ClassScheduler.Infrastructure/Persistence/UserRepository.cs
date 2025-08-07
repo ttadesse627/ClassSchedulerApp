@@ -48,7 +48,7 @@ public class UserRepository(ClassSchedulerDbContext context, UserManager<User> u
 
     public async Task<(Result result, User? user)> AuthenticateUser(string userName, string password)
     {
-        var user = await _context.Users.Include(user => user.PersonInfo).Include(user => user.Roles).Where(user => user.UserName == userName).FirstOrDefaultAsync();
+        var user = await _context.Users.Include(user => user.Person).Include(user => user.Roles).Where(user => user.UserName == userName).FirstOrDefaultAsync();
 
         if (user != null && await _userManager.CheckPasswordAsync(user, password))
         {

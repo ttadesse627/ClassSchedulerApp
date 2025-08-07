@@ -17,20 +17,24 @@ public class GenerateScheduleCommandHandler : IRequestHandler<GenerateScheduleCo
 
     private readonly IClassRepository _classRepository;
     private readonly IDepartmentRepository _departmentRepository;
+    private readonly IDeptBatchRepository _deptBatchRepository;
+    private readonly ISectionRepository _sectionRepository;
     private readonly ICourseRepository _courseRepository;
     private readonly IInstructorRepository _instructorRepository;
     private readonly IRoomRepository _roomRepository;
-    private readonly ITimePeriodRepository _timePeriodRepository;
+    private readonly ITimeSlotRepository _TimeSlotRepository;
 
-    public GenerateScheduleCommandHandler(IDepartmentRepository departmentRepository, ICourseRepository courseRepository, IInstructorRepository instructorRepository, IRoomRepository roomRepository, ITimePeriodRepository timePeriodRepository, IClassRepository classRepository)
+    public GenerateScheduleCommandHandler(IDepartmentRepository departmentRepository, IDeptBatchRepository deptBatchRepository, ISectionRepository sectionRepository, ICourseRepository courseRepository, IInstructorRepository instructorRepository, IRoomRepository roomRepository, ITimeSlotRepository TimeSlotRepository, IClassRepository classRepository)
     {
         _classRepository = classRepository;
-        _timePeriodRepository = timePeriodRepository;
+        _TimeSlotRepository = TimeSlotRepository;
         _departmentRepository = departmentRepository;
         _courseRepository = courseRepository;
         _instructorRepository = instructorRepository;
         _roomRepository = roomRepository;
-        _data = new(_departmentRepository, _courseRepository, _instructorRepository, _roomRepository, _timePeriodRepository);
+        _deptBatchRepository = deptBatchRepository;
+        _sectionRepository = sectionRepository;
+        _data = new(_departmentRepository, _deptBatchRepository,_sectionRepository, _courseRepository, _instructorRepository, _roomRepository, _TimeSlotRepository);
 
     }
     public async Task<ServiceResponse<int>> Handle(GenerateScheduleCommand command, CancellationToken cancellationToken)

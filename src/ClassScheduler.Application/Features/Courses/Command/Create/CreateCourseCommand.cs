@@ -7,7 +7,7 @@ namespace ClassScheduler.Application.Features.Courses.Command.Create;
 public record CreateCourseCommand : IRequest<ServiceResponse<int>>
 {
     public ICollection<CreateCourseRequest> Courses { get; set; } = [];
-    public Guid DepartmentId { get; set; }
+    public Guid DeptBatchId { get; set; }
 }
 
 public class CreateCourseCommandHandler(ICourseRepository courseRepository) : IRequestHandler<CreateCourseCommand, ServiceResponse<int>>
@@ -16,19 +16,20 @@ public class CreateCourseCommandHandler(ICourseRepository courseRepository) : IR
     public async Task<ServiceResponse<int>> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<int>();
-        IList<Course> courses = [];
-        Console.WriteLine(request);
+        List<Course> courses = [];
         if (request.Courses.Count > 0)
         {
             foreach (var course in request.Courses)
             {
-                var courseEntity = new Course
+                var courseEntity = new Course 
                 {
                     Name = course.Name,
-                    CourseCode = course.CourseCode,
-                    CreditHours = course.CreditHours,
+                    Code = course.Code,
+                    CreditHour = course.CreditHour,
                     ECTS = course.ECTS,
-                    DepatmentId = request.DepartmentId
+                    LabHour = course.LabHour,
+                    LectureHour = course.LectureHour,
+                    DeptBatchId = request.DeptBatchId
                 };
                 courses.Add(courseEntity);
             }

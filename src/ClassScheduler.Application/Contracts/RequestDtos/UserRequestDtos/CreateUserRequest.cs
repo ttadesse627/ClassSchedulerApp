@@ -8,6 +8,6 @@ public record CreateUserRequest
     public string? PhoneNumber { get; set; }
     public string? Username { get; set; }
     public string Password { get; set; } = string.Empty;
-    public PersonInfoRequest? PersonInfo { get; set; }
+    public PersonRequest? Person { get; set; }
     public ICollection<Guid> RoleIds { get; set; } = [];
 }

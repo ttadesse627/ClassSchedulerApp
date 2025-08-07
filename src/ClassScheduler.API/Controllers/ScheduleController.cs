@@ -21,11 +21,11 @@ public class ScheduleController : ApiController
     }
 
     [HttpGet("GetSchedules/{departmentId}")]
-    public async Task<ActionResult<List<DepartmentClassesDto>>> Get(string departmentId)
+    public async Task<ActionResult<List<SectionClassesDto>>> Get(string sectionId)
     {
-        if (!string.IsNullOrEmpty(departmentId.Trim()) && Guid.Parse(departmentId) != Guid.Empty)
+        if (!string.IsNullOrEmpty(sectionId.Trim()) && Guid.Parse(sectionId) != Guid.Empty)
         {
-            return Ok(await _sender.Send(new GetScheduleQuery(Guid.Parse(departmentId))));
+            return Ok(await _sender.Send(new GetScheduleQuery(Guid.Parse(sectionId))));
         }
         return BadRequest("Department Id is required");
     }

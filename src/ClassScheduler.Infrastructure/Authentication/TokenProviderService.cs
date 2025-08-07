@@ -28,7 +28,7 @@ public class TokenProviderService : ITokenProviderService
         {
             new (CustomClaims.UserId, userDetails.Id),
             new(JwtRegisteredClaimNames.Sub, userDetails.UserName),
-            new(JwtRegisteredClaimNames.Jti, userDetails.PersonInfo.FirstName)
+            new(JwtRegisteredClaimNames.Jti, userDetails.Person.FirstName)
         };
 
         var token = new JwtSecurityToken(

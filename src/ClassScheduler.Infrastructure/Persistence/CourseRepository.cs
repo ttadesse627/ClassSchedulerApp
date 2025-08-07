@@ -49,7 +49,7 @@ public class CourseRepository(ClassSchedulerDbContext context) : ICourseReposito
 
     public async Task<List<Course>> GetAllAsync()
     {
-        return await _context.Courses.Include(course => course.Department).ToListAsync();
+        return await _context.Courses.Include(course => course.DeptBatch).ToListAsync();
     }
 
     public async Task<List<Course>> GetByIdsAsync(List<Guid> ids)

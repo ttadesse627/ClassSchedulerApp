@@ -1,7 +1,7 @@
 
 
-namespace ClassScheduler.Application.Contracts.ResponseDtos.PersonInfoDtos;
-public record PersonInfoResponseDto
+namespace ClassScheduler.Application.Contracts.ResponseDtos.PersonDtos;
+public record PersonResponseDto
 {
     public string FirstName { get; set; } = null!;
     public string MiddleName { get; set; } = null!;
