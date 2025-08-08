@@ -5,9 +5,8 @@ namespace ClassScheduler.Application.Contracts.ResponseDtos.DepartmentResponseDt
 public record DepartmentResponseDto
 {
     public Guid Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string ShortName { get; set; } = null!;
+    public required string Name { get; set; }
+    public string? ShortName { get; set; }
     public int NumberOfSemisters { get; set; }
-    public int CurrentSemister { get; set; }
-    public ICollection<CourseResponseDto>? Courses { get; set; }
+    public ICollection<CourseResponseDto> Courses { get; set; } = [];
 }

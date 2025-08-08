@@ -3,8 +3,8 @@ using ClassScheduler.Domain.Model.Entities.Base;
 namespace ClassScheduler.Domain.Model.Entities;
 public class Course : BaseAuditableEntity
 {
-    public string Name { get; set; }
-    public string Code { get; set; }
+    public required string Name { get; set; }
+    public required string Code { get; set; }
     public int CreditHour { get; set; }
     public int ECTS { get; set; }
     public int LabHour { get; set; }

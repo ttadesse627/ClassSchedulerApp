@@ -6,8 +6,7 @@ namespace ClassScheduler.Application.Contracts.RequestDtos.DepartmentRequestDtos
 public record DepartmentRequestDto
 {
     public required string Name { get; set; }
-    public required string ShortName { get; set; }
+    public required string Code { get; set; }
     public int NumberOfSemisters { get; set; }
-    public int CurrentSemister { get; set; }
-    public ICollection<CourseRequestDto>? Courses { get; set; }
+    public Guid FacultyId { get; set; }
 }
