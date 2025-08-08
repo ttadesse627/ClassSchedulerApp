@@ -1,3 +1,4 @@
+using ClassScheduler.Application.Contracts.ResponseDtos.Common;
 using ClassScheduler.Application.Interfaces.Persistence;
 using ClassScheduler.Domain.Model.Entities;
 using ClassScheduler.Infrastructure.Context;
@@ -25,10 +26,19 @@ public class SectionRepository(ClassSchedulerDbContext context) : CommonReposito
         return await _context.Sections.ToListAsync();
     }
 
-    public async Task<Section> GetAsync(Guid id)
+    public async Task<ServiceResponse<Section>> GetAsync(Guid id)
     {
-        var section = await _context.Sections.FindAsync(id);
-        return section;
+        var response = new ServiceResponse<Section>
+        {
+            Data = await _context.Sections.FindAsync(id),
+            Success = true
+        };
+        if (response.Data is null)
+        {
+            response.Message = "No section found";
+            response.Success = false;
+        }
+        return response;
     }
 
     public async Task<bool> DeleteAsync(Section section)
