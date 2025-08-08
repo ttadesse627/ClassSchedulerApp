@@ -6,21 +6,16 @@ using ClassScheduler.Domain.Model.Entities;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ClassScheduler.Infrastructure.Authentication;
-public class TokenProviderService : ITokenProviderService
+public class TokenProviderService(string key, string issueer, string audience, string expiryMinutes) : ITokenProviderService
 {
-    private readonly string _key;
-    private readonly string _issuer;
-    private readonly string _audience;
-    private readonly string _expiryMinutes;
-    public TokenProviderService(string key, string issueer, string audience, string expiryMinutes)
-    {
-        _key = key;
-        _issuer = issueer;
-        _audience = audience;
-        _expiryMinutes = expiryMinutes;
-    }
+    private readonly string _key = key;
+    private readonly string _issuer = issueer;
+    private readonly string _audience = audience;
+    private readonly string _expiryMinutes = expiryMinutes;
+
     public async Task<string> GenerateJWTTokenAsync(User userDetails)
     {
+        await Task.CompletedTask;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 

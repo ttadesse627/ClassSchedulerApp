@@ -8,16 +8,11 @@ using MediatR;
 
 namespace ClassScheduler.Application.Features.Departments.Command.Create;
 public record CreateDepartmentCommand(DepartmentRequestDto Department) : IRequest<ServiceResponse<DepartmentResponseDto>> { }
-public class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, ServiceResponse<DepartmentResponseDto>>
+public class CreateDepartmentCommandHandler(IMapper mapper, IDepartmentRepository departmentRepository) : IRequestHandler<CreateDepartmentCommand, ServiceResponse<DepartmentResponseDto>>
 {
-    private readonly IMapper _mapper;
-    private readonly IDepartmentRepository _departmentRepository;
+    private readonly IMapper _mapper = mapper;
+    private readonly IDepartmentRepository _departmentRepository = departmentRepository;
 
-    public CreateDepartmentCommandHandler(IMapper mapper, IDepartmentRepository departmentRepository)
-    {
-        _mapper = mapper;
-        _departmentRepository = departmentRepository;
-    }
     public async Task<ServiceResponse<DepartmentResponseDto>> Handle(CreateDepartmentCommand command, CancellationToken cancellationToken)
     {
         var response = new ServiceResponse<DepartmentResponseDto>();
