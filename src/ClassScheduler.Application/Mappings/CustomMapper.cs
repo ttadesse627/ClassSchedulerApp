@@ -7,7 +7,7 @@ using ClassScheduler.Application.Contracts.ResponseDtos.CourseResponseDtos;
 using ClassScheduler.Application.Contracts.ResponseDtos.DepartmentResponseDtos;
 using ClassScheduler.Application.Contracts.ResponseDtos.InstructorResponseDts;
 using ClassScheduler.Application.Contracts.ResponseDtos.RoomResponseDtos;
-using ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDts;
+using ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDtos;
 using ClassScheduler.Domain.Model.Entities;
 using Mapster;
 

@@ -2,7 +2,7 @@ using ClassScheduler.Application.Contracts.ResponseDtos.DepartmentResponseDtos;
 using ClassScheduler.Application.Contracts.ResponseDtos.PersonDtos;
 
 
-namespace ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDts;
+namespace ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDtos;
 public record StudentResponseDto
 {
     public Guid Id { get; set; }

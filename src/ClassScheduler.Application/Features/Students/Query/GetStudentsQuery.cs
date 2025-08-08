@@ -1,4 +1,4 @@
-using ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDts;
+using ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDtos;
 using ClassScheduler.Application.Interfaces.Persistence;
 using ErrorOr;
 using MapsterMapper;

@@ -1,5 +1,5 @@
 using ClassScheduler.Application.Contracts.ResponseDtos.Common;
-using ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDts;
+using ClassScheduler.Application.Contracts.ResponseDtos.StudentResponseDtos;
 using ClassScheduler.Application.Features.Students.Command.Create;
 using ClassScheduler.Application.Features.Students.Command.Delete;
 using ClassScheduler.Application.Features.Students.Query;
