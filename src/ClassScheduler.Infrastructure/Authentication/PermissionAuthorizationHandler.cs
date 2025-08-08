@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ClassScheduler.Infrastructure.Authentication;
-public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScope) : AuthorizationHandler<PermissionRequirement>
+public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {
-    private readonly IServiceScopeFactory _serviceScope = serviceScope;
+    // private readonly IServiceScopeFactory _serviceScope = serviceScope;
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {
+        await Task.CompletedTask;
         string? userid = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
         if (!Guid.TryParse(userid, out Guid parsedUserId))
         {
