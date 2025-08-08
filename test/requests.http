@@ -24,7 +24,7 @@ POST {{host}}/api/Room/Create HTTP/1.1
 Content-Type: application/json
 
 {
-  "roomNumber": "R015",
+  "Code": "R015",
   "blockNumber": "B01",
   "roomType": "Lab"
 }
@@ -62,8 +62,8 @@ Content-Type: application/json
     "courses": [
       {
         "name": "Digital Logic Design",
-        "courseCode": "SE1012",
-        "creditHours": 3,
+        "Code": "SE1012",
+        "CreditHour": 3,
         "ects": 5
       }
     ],
@@ -88,7 +88,7 @@ Content-Type: application/json
   "phoneNumber": "+251946938942",
   "username": "dula",
   "password": "dulaCh@123",
-  "personInfo": {
+  "Person": {
     "firstName": "Dula",
     "middleName": "Chala",
     "lastName": "Tolcha",
