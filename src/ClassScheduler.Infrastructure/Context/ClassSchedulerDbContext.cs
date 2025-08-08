@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace ClassScheduler.Infrastructure.Context;
 public class ClassSchedulerDbContext(DbContextOptions<ClassSchedulerDbContext> dbContextOptions) : DbContext(dbContextOptions)
 {
+    public DbSet<Campus> Campuses { get; set; }
+    public DbSet<Faculty> Faculties { get; set; }
     public DbSet<Person> Persons { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
