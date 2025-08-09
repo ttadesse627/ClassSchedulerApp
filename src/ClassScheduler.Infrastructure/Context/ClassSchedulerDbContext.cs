@@ -20,6 +20,9 @@ public class ClassSchedulerDbContext(DbContextOptions<ClassSchedulerDbContext> d
     public DbSet<Class> Classes { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<TimeSlot> TimeSlots { get; set; }
+    public DbSet<Exam> Exams { get; set; }
+    public DbSet<Grade> Grades { get; set; }
+    public DbSet<StudentCourse> StudentCourses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

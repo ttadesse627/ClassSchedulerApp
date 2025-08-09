@@ -33,6 +33,7 @@ public static class DependencyInjection
         services.AddTransient(typeof(IRoleRepository), typeof(RoleRepository));
         services.AddTransient(typeof(ICampusRepository), typeof(CampusRepository));
         services.AddTransient(typeof(IFacultyRepository), typeof(FacultyRepository));
+        services.AddTransient(typeof(IExamRepository), typeof(ExamRepository));
 
         services.AddIdentity<User, IdentityRole>()
         .AddEntityFrameworkStores<ClassSchedulerDbContext>();
